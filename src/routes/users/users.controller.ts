@@ -1,4 +1,6 @@
 import { Request, Response, NextFunction } from "express";
+import { UserPayload } from "../../types/request";
+import usersModel from "../../models/users.model";
 
 const getAllUsers = async (req: Request, res: Response) => {
   const users = [
@@ -18,6 +20,27 @@ const getAllUsers = async (req: Request, res: Response) => {
   return res.json(response);
 }
 
+const postUser = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const {email, password, username, fullName, roleId} = req.body as UserPayload;
+    const userId = await usersModel.addUser({email, password, username, fullName, roleId});
+
+
+    const response = {
+      status: 'success',
+      message: 'User berhasil ditambahkan',
+      data: {
+        userId
+      }
+    }
+
+    res.status(201).json(response);
+  } catch (error) {
+    next(error);
+  }
+}
+
 export {
   getAllUsers,
+  postUser
 }
