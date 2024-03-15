@@ -1,7 +1,8 @@
-import { ResultSetHeader } from "mysql2";
-import { UserPayload } from "../types/request";
-import { executeQuery } from '../util/database'
-import { getTimeStamp, getUnixTimeStamp } from "../util/date";
+import InvariantError from "@src/exceptions/InvariantError";
+import { UserPayload } from "@src/types/request";
+import { executeQuery } from "@utils/database";
+import { getTimeStamp } from "@utils/date";
+
 import bcrypt from 'bcrypt';
 
 const addUser = async ({email, username, password, fullName, roleId}: UserPayload) => {
@@ -12,7 +13,14 @@ const addUser = async ({email, username, password, fullName, roleId}: UserPayloa
     'INSERT INTO USERS (username, email, password, full_name, role_id, created_at) VALUES (?, ? ,?, ?, ?, ?)',
     [username, email, hashedPassword, fullName, roleId, createdAt]
   )
+
+  console.log(result, 'result');
   
+
+  if(!result.insertId){
+    throw new InvariantError('User gagal ditambahkan')
+  }
+
   return result.insertId;
 }
 

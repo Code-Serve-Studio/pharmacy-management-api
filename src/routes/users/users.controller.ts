@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
-import { UserPayload } from "../../types/request";
-import usersModel from "../../models/users.model";
+import usersModel from "@models/users.model";
+import { UserPayload } from "@src/types/request";
+
 
 const getAllUsers = async (req: Request, res: Response) => {
   const users = [
