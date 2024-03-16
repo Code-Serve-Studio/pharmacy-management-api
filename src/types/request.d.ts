@@ -6,3 +6,8 @@ export type UserPayload = {
   email: string;
   roleId: number;
 }
+
+export type LoginPayload = {
+  username: string;
+  password: string;
+}
