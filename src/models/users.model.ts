@@ -12,10 +12,7 @@ const addUser = async ({email, username, password, fullName, roleId}: UserPayloa
   const result = await executeQuery(
     'INSERT INTO USERS (username, email, password, full_name, role_id, created_at) VALUES (?, ? ,?, ?, ?, ?)',
     [username, email, hashedPassword, fullName, roleId, createdAt]
-  )
-
-  console.log(result, 'result');
-  
+  )  
 
   if(!result.insertId){
     throw new InvariantError('User gagal ditambahkan')

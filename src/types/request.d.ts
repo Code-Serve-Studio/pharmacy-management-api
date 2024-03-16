@@ -11,3 +11,18 @@ export type LoginPayload = {
   username: string;
   password: string;
 }
+
+export type ProductPayload = {
+  name: string;
+  image: string;
+  description: string;
+  purchasePrice: number;
+  linkPrice: number;
+  retailPrice: number;
+  paramedicPrice: number;
+  branchPrice: number;
+  unit: string;
+  groupId: number;
+  stock: number;
+  size: string;
+}
