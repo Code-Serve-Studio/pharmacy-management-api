@@ -20,6 +20,24 @@ const postProduct = async (req: Request, res: Response, next: NextFunction) => {
   }
 }
 
+const getProducts = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const products = await productsModel.selectProducts();
+
+    const response = {
+      status: 'success',
+      data: {
+        products
+      }
+    }
+
+    res.status(200).json(response);
+  } catch (error) {
+    next(error);
+  }
+}
+
 export {
   postProduct,
+  getProducts,
 }
