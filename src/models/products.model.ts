@@ -1,6 +1,6 @@
 import InvariantError from "@src/exceptions/InvariantError";
 import { ProductPayload } from "@src/types/request";
-import { executeQuery } from "@utils/database";
+import { executeQuery, selectQuery } from "@utils/database";
 
 const addProduct = async (product: ProductPayload) => {
   const {
@@ -33,6 +33,15 @@ const addProduct = async (product: ProductPayload) => {
   return result.insertId;
 }
 
+const selectProducts = async () => {
+  const result = await selectQuery(
+    'SELECT * FROM products'
+  );
+
+  return result;
+}
+
 export default {
   addProduct,
+  selectProducts,
 }
