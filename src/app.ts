@@ -1,8 +1,8 @@
 import express, { Express, Request, Response, NextFunction } from "express";
 import { usersRouter, loginRouter, productsRouter } from "./routes";
-import { errorHandler } from "@utils/errorHandler";
+import { errorHandler } from "./utils/errorHandler";
 import cors from 'cors';
-import logger from '@utils/winstone';
+import logger from './utils/winstone';
 
 const app: Express = express();
 

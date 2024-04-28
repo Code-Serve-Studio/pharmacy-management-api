@@ -1,6 +1,6 @@
-import InvariantError from "@src/exceptions/InvariantError";
-import { ProductPayload } from "@src/types/request";
-import { executeQuery, selectQuery } from "@utils/database";
+import InvariantError from "../exceptions/InvariantError";
+import { ProductPayload } from "../types/request";
+import { executeQuery, selectQuery } from "../utils/database";
 
 const addProduct = async (product: ProductPayload) => {
   const {

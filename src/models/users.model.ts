@@ -1,7 +1,7 @@
-import InvariantError from "@src/exceptions/InvariantError";
-import { UserPayload } from "@src/types/request";
-import { executeQuery } from "@utils/database";
-import { getTimeStamp } from "@utils/date";
+import InvariantError from "../exceptions/InvariantError";
+import { UserPayload } from "../types/request";
+import { executeQuery } from "../utils/database";
+import { getTimeStamp } from "../utils/date";
 
 import bcrypt from 'bcrypt';
 

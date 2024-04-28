@@ -1,6 +1,6 @@
-import ClientError from '@src/exceptions/ClientError';
+import ClientError from '../exceptions/ClientError';
 import {NextFunction, Request, Response} from 'express';
-import logger from '@utils/winstone';
+import logger from './winstone';
 
 export const errorHandler = (err: Error, req: Request, res: Response, next: NextFunction) => {
   if(err instanceof ClientError){
