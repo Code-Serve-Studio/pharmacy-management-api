@@ -2,7 +2,7 @@ import AuthenticationError from "../exceptions/AuthenticationError";
 import InvariantError from "../exceptions/InvariantError";
 import { LoginPayload } from "../types/request";
 import { executeQuery, selectQuery } from "../utils/database";
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 
 const verifyUserCredential = async ({username, password}: LoginPayload) => {
   const result = await selectQuery(

@@ -3,7 +3,7 @@ import { UserPayload } from "../types/request";
 import { executeQuery } from "../utils/database";
 import { getTimeStamp } from "../utils/date";
 
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 
 const addUser = async ({email, username, password, fullName, roleId}: UserPayload) => {
   const createdAt = getTimeStamp();
