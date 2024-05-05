@@ -1,2 +1,6 @@
 {"level":"info","message":"Request received: GET /","timestamp":"2024-04-27T04:52:49.661Z"}
 {"level":"info","message":"Request received: GET /favicon.ico","timestamp":"2024-04-27T04:52:49.915Z"}
+{"level":"info","message":"Request received: GET /","timestamp":"2024-05-05T09:02:01.240Z"}
+{"level":"info","message":"Request received: GET /","timestamp":"2024-05-05T09:03:46.312Z"}
+{"level":"info","message":"Request received: GET /api/products","timestamp":"2024-05-05T09:03:52.658Z"}
+{"level":"info","message":"Request received: GET /favicon.ico","timestamp":"2024-05-05T09:03:52.756Z"}
