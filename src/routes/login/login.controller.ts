@@ -1,6 +1,6 @@
-import { verifyUserCredential } from "../../models/authentication.model";
-import { LoginPayload } from "../../types/request";
-import { generateAccessToken } from "../../utils/tokenManager";
+import { verifyUserCredential } from "@models/authentication.model";
+import { LoginPayload } from "@src/types/request";
+import { generateAccessToken } from "@utils/tokenManager";
 import { Request, Response, NextFunction } from "express";
 
 const authentication = async (req: Request, res: Response, next: NextFunction) => {
