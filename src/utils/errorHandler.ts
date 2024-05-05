@@ -1,4 +1,4 @@
-import ClientError from '../exceptions/ClientError';
+import ClientError from '@src/exceptions/ClientError';
 import {NextFunction, Request, Response} from 'express';
 import logger from './winstone';
 

@@ -1,8 +1,8 @@
-import { DecodePayload, TokenPayload } from "../types/token";
+import { DecodePayload, TokenPayload } from "@src/types/token";
 import jwt from 'jsonwebtoken';
 import { Request, Response, NextFunction } from 'express';
-import InvariantError from "../exceptions/InvariantError";
-import AuthenticationError from "../exceptions/AuthenticationError";
+import InvariantError from "@src/exceptions/InvariantError";
+import AuthenticationError from "@src/exceptions/AuthenticationError";
 
 const generateAccessToken = (payload: TokenPayload) => {
   const key = process.env.ACCESS_TOKEN_KEY as string;

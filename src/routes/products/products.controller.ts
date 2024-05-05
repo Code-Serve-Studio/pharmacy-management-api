@@ -1,6 +1,6 @@
-import { ProductPayload } from "../../types/request";
+import { ProductPayload } from "@src/types/request";
 import { Response, Request, NextFunction } from "express"
-import productsModel from "../../models/products.model";
+import productsModel from "@models/products.model";
 
 const postProduct = async (req: Request, res: Response, next: NextFunction) => {
   try {
