@@ -3,6 +3,6 @@ import { authentication } from './login.controller';
 
 const loginRouter = express.Router();
 
-loginRouter.post('/api/login', authentication);
+loginRouter.post('/login', authentication);
 
 export default loginRouter;

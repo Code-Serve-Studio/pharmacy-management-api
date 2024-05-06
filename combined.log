@@ -4,3 +4,34 @@
 {"level":"info","message":"Request received: GET /","timestamp":"2024-05-05T09:03:46.312Z"}
 {"level":"info","message":"Request received: GET /api/products","timestamp":"2024-05-05T09:03:52.658Z"}
 {"level":"info","message":"Request received: GET /favicon.ico","timestamp":"2024-05-05T09:03:52.756Z"}
+{"level":"info","message":"Request received: POST /upload/image","timestamp":"2024-05-05T17:05:12.145Z"}
+{"level":"error","message":"Server error: Unexpected field","timestamp":"2024-05-05T17:05:12.152Z"}
+{"level":"info","message":"Request received: POST /upload/image","timestamp":"2024-05-05T17:09:06.375Z"}
+{"level":"error","message":"Server error: Unexpected field","timestamp":"2024-05-05T17:09:06.382Z"}
+{"level":"info","message":"Request received: POST /upload/image","timestamp":"2024-05-05T17:10:30.999Z"}
+{"level":"error","message":"Server error: Unexpected field","timestamp":"2024-05-05T17:10:31.005Z"}
+{"level":"info","message":"Request received: POST /upload/image","timestamp":"2024-05-05T17:12:23.731Z"}
+{"level":"error","message":"Server error: Unexpected field","timestamp":"2024-05-05T17:12:23.737Z"}
+{"level":"info","message":"Request received: POST /upload/image","timestamp":"2024-05-05T17:12:46.354Z"}
+{"level":"error","message":"Server error: Unexpected field","timestamp":"2024-05-05T17:12:46.360Z"}
+{"level":"info","message":"Request received: POST /upload/image","timestamp":"2024-05-05T17:13:31.646Z"}
+{"level":"error","message":"Server error: Unexpected field","timestamp":"2024-05-05T17:13:31.652Z"}
+{"level":"info","message":"Request received: POST /upload/image","timestamp":"2024-05-05T17:14:40.609Z"}
+{"level":"error","message":"Server error: Unexpected field","timestamp":"2024-05-05T17:14:40.615Z"}
+{"level":"info","message":"Request received: POST /upload/image","timestamp":"2024-05-05T17:15:20.186Z"}
+{"level":"error","message":"Server error: Unexpected field","timestamp":"2024-05-05T17:15:20.194Z"}
+{"level":"info","message":"Request received: POST /upload/image","timestamp":"2024-05-05T17:15:35.015Z"}
+{"level":"error","message":"Server error: Unexpected field","timestamp":"2024-05-05T17:15:35.017Z"}
+{"level":"info","message":"Request received: POST /upload/image","timestamp":"2024-05-05T17:46:35.685Z"}
+{"level":"error","message":"Server error: Unexpected field","timestamp":"2024-05-05T17:46:35.691Z"}
+{"level":"info","message":"Request received: POST /upload/image","timestamp":"2024-05-05T17:48:04.261Z"}
+{"level":"error","message":"Server error: Unexpected field","timestamp":"2024-05-05T17:48:04.263Z"}
+{"level":"info","message":"Request received: POST /upload/image","timestamp":"2024-05-05T17:48:22.927Z"}
+{"level":"error","message":"Server error: ENOENT: no such file or directory, open '/home/ilhamarbani/Projects/pharmacy-management-api/src/routes/upload/public/1714931302932_Screenshot from 2024-05-03 13-31-27.png'","timestamp":"2024-05-05T17:48:22.934Z"}
+{"level":"info","message":"Request received: POST /upload/image","timestamp":"2024-05-05T17:49:37.654Z"}
+{"level":"error","message":"Server error: ENOENT: no such file or directory, open '/home/ilhamarbani/Projects/pharmacy-management-api/src/routes/upload/public/1714931377660_Screenshot from 2024-05-03 13-31-27.png'","timestamp":"2024-05-05T17:49:37.662Z"}
+{"level":"info","message":"Request received: POST /upload/image","timestamp":"2024-05-05T17:51:59.119Z"}
+{"level":"error","message":"Server error: ENOENT: no such file or directory, open '/home/ilhamarbani/Projects/pharmacy-management-api/src/routes/upload/public/1714931519124_Screenshot from 2024-05-03 13-31-27.png'","timestamp":"2024-05-05T17:51:59.126Z"}
+{"level":"info","message":"Request received: POST /upload/image","timestamp":"2024-05-05T17:52:24.238Z"}
+{"level":"error","message":"Server error: ENOENT: no such file or directory, open 'public/1714931544243_Screenshot from 2024-05-03 13-31-27.png'","timestamp":"2024-05-05T17:52:24.245Z"}
+{"level":"info","message":"Request received: POST /upload/image","timestamp":"2024-05-05T17:52:53.608Z"}
