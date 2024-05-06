@@ -3,22 +3,19 @@ import usersModel from "@models/users.model";
 import { UserPayload } from "@src/types/request";
 
 
-const getAllUsers = async (req: Request, res: Response) => {
-  const users = [
-    {
-      name: 'ilham'
-    },
-    {
-      name: 'naufal'
-    },
-  ];
-
-  const response = {
-    status: 'success',
-    data: users
+const getAllUsers = async (_: Request, res: Response, next: NextFunction) => {
+  try {
+    const users = await usersModel.selectUsers();
+  
+    const response = {
+      status: 'success',
+      data: users
+    }
+  
+    return res.json(response);
+  } catch (error) {
+    next(error);
   }
-
-  return res.json(response);
 }
 
 const postUser = async (req: Request, res: Response, next: NextFunction) => {

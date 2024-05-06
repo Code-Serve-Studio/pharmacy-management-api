@@ -35,3 +35,4 @@
 {"level":"info","message":"Request received: POST /upload/image","timestamp":"2024-05-05T17:52:24.238Z"}
 {"level":"error","message":"Server error: ENOENT: no such file or directory, open 'public/1714931544243_Screenshot from 2024-05-03 13-31-27.png'","timestamp":"2024-05-05T17:52:24.245Z"}
 {"level":"info","message":"Request received: POST /upload/image","timestamp":"2024-05-05T17:52:53.608Z"}
+{"level":"info","message":"Request received: GET /users","timestamp":"2024-05-06T14:59:57.223Z"}

@@ -20,7 +20,7 @@ const postProduct = async (req: Request, res: Response, next: NextFunction) => {
   }
 }
 
-const getProducts = async (req: Request, res: Response, next: NextFunction) => {
+const getProducts = async (_: Request, res: Response, next: NextFunction) => {
   try {
     const products = await productsModel.selectProducts();
 
