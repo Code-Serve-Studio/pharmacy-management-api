@@ -1,6 +1,6 @@
 import InvariantError from "@src/exceptions/InvariantError";
 import { UserPayload } from "@src/types/request";
-import { executeQuery } from "@src/utils/database";
+import { executeQuery, selectQuery } from "@src/utils/database";
 import { getTimeStamp } from "@utils/date";
 
 import bcrypt from 'bcryptjs';
@@ -21,6 +21,16 @@ const addUser = async ({email, username, password, fullName, roleId}: UserPayloa
   return result.insertId;
 }
 
+const selectUsers = async() => {
+  const result = await selectQuery(
+    'SELECT * FROM users'
+  );
+
+  return result;
+}
+
 export default {
   addUser,
+  selectQuery,
+  selectUsers,
 }
