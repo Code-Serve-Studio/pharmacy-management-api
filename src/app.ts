@@ -1,5 +1,5 @@
 import express, { Express, Request, Response, NextFunction } from "express";
-import { usersRouter, loginRouter, productsRouter } from "./routes";
+import { usersRouter, loginRouter, productsRouter, uploadRouter } from "./routes";
 import { errorHandler } from "./utils/errorHandler";
 import cors from 'cors';
 import logger from '@utils/winstone';
@@ -13,9 +13,11 @@ app.use((req: Request, res: Response, next: NextFunction) => {
   logger.info(`Request received: ${req.method} ${req.url}`);
   next();
 });
+
 app.use(usersRouter);
 app.use(productsRouter);
 app.use(loginRouter);
+app.use(uploadRouter);
 app.use(errorHandler);
 
 export default app;
