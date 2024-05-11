@@ -1,5 +1,5 @@
 import { TransactionPayload } from "@src/types/request";
-import { executeQuery, pool, queryGenerator } from "@utils/database";
+import { executeQuery, pool, queryGenerator, selectQuery } from "@utils/database";
 
 const addTransaction = async (transaction: TransactionPayload) => {
   const {
@@ -52,6 +52,14 @@ const addTransaction = async (transaction: TransactionPayload) => {
   }
 }
 
+const selectTransactions = async () => {
+  const query = queryGenerator(`SELECT * FROM transactions`);
+  const result = await selectQuery(query);  
+
+  return result;
+}
+
 export default {
   addTransaction,
+  selectTransactions,
 }
