@@ -11,7 +11,7 @@ const pool: Pool = mysql.createPool({
 
 const executeQuery = async (
   query: string,
-  params: Array<string | number | Date> = []
+  params: Array<string | number | Date | any> = []
 ): Promise<ResultSetHeader> => {
   const [result] = await pool.execute<ResultSetHeader>(query, params);
   return result;
@@ -25,8 +25,16 @@ const selectQuery = async (
   return rows;
 }
 
+const queryGenerator = (
+  query: string,
+  params: Array<string | number | Date | any> = []
+) => {
+  return mysql.format(query, params)
+}
+
 export {
   pool,
   executeQuery,
   selectQuery,
+  queryGenerator,
 };

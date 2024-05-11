@@ -26,3 +26,17 @@ export type ProductPayload = {
   stock: number;
   size: string;
 }
+
+export type ProductTransaction = {
+  productId: string | number;
+  quantity: number;
+  price: number;
+}
+
+export type TransactionPayload = {
+  transactionType: 'in' | 'out';
+  userId: string | number;
+  totalPrice: number;
+  transactionDate: string | number;
+  products: ProductTransaction[]
+}
