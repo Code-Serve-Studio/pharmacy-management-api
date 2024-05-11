@@ -21,6 +21,24 @@ const postTransaction = async (req: Request, res: Response, next: NextFunction) 
   }
 }
 
+const getTransactions = async (_: Request, res: Response, next: NextFunction) => {
+  try {
+    const transactions = await transactionsModel.selectTransactions();
+
+    const response = {
+      status: 'success',
+      data: {
+        transactions
+      }
+    }
+
+    res.status(201).json(response);
+  } catch (error) {
+    next(error);
+  }
+}
+
 export {
   postTransaction,
+  getTransactions,
 }
