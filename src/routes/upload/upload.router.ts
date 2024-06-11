@@ -19,7 +19,7 @@ try {
   })
   
   
-  imageRouter.post('/upload/image', multer({storage: diskStorage}).single('image'), postUploadImage)
+  imageRouter.post('/api/upload/image', multer({storage: diskStorage}).single('image'), postUploadImage)
   
 } catch (error) {
   console.log(error);

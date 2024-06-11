@@ -3,7 +3,7 @@ import { getProducts, postProduct } from './products.controller';
 
 const productsRouter = express.Router();
 
-productsRouter.post('/products', postProduct);
-productsRouter.get('/products', getProducts)
+productsRouter.post('/api/product', postProduct);
+productsRouter.get('/api/products', getProducts)
 
 export default productsRouter;
