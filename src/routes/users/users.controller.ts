@@ -20,8 +20,8 @@ const getAllUsers = async (_: Request, res: Response, next: NextFunction) => {
 
 const postUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const {email, password, username, fullName, roleId} = req.body as UserPayload;
-    const userId = await usersModel.addUser({email, password, username, fullName, roleId});
+    const {email, password, username, fullName, roleId, image} = req.body as UserPayload;
+    const userId = await usersModel.addUser({email, password, username, fullName, roleId, image});
 
 
     const response = {

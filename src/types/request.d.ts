@@ -3,8 +3,8 @@ export type UserPayload = {
   email: string;
   password: string;
   fullName: string;
-  email: string;
   roleId: number;
+  image: string;
 }
 
 export type LoginPayload = {
@@ -17,6 +17,7 @@ export type ProductPayload = {
   image: string;
   description: string;
   purchasePrice: number;
+  sellingPrice: number;
   linkPrice: number;
   retailPrice: number;
   paramedicPrice: number;

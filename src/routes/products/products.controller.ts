@@ -37,7 +37,24 @@ const getProducts = async (_: Request, res: Response, next: NextFunction) => {
   }
 }
 
+const getProduct = async(req: Request, res: Response, next: NextFunction) => {
+  try {
+    const id = req.params.id as string | number
+    const product = await productsModel.selectProductById({id})
+
+    const response = {
+      status: 'success',
+      data: product,
+    }
+
+    res.status(200).json(response);
+  } catch (error) {
+    next(error);
+  }
+}
+
 export {
   postProduct,
   getProducts,
+  getProduct,
 }
