@@ -26,6 +26,7 @@ export type ProductPayload = {
   groupId: number;
   stock: number;
   size: string;
+  discount: number;
 }
 
 export type ProductTransaction = {

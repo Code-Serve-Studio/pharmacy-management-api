@@ -18,15 +18,16 @@ const addProduct = async (product: ProductPayload) => {
     stock,
     size,
     sellingPrice,
+    discount,
   } = product;
 
   
   const result = await executeQuery(
     `INSERT INTO products
-    (name, image, description, purchase_price, selling_price, link_price, paramedic_price, retail_price, branch_price, unit, group_id, stock, size)
+    (name, image, description, purchase_price, discount, selling_price, link_price, paramedic_price, retail_price, branch_price, unit, group_id, stock, size)
     VALUES
-    (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-    [name, image, description, purchasePrice, sellingPrice, linkPrice, paramedicPrice, retailPrice, branchPrice, unit, groupId, stock, size]
+    (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+    [name, image, description, purchasePrice, discount, sellingPrice, linkPrice, paramedicPrice, retailPrice, branchPrice, unit, groupId, stock, size]
   );
 
   if(!result.insertId){
