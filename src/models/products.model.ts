@@ -19,20 +19,48 @@ const addProduct = async (product: ProductPayload) => {
     size,
     sellingPrice,
     discount,
+    categories,
+    subCategories,
   } = product;
+
+  const insertProductQuery = `INSERT INTO products
+    (name, image, description, purchase_price, discount, selling_price, link_price, paramedic_price, retail_price, branch_price, unit, group_id, stock, size)
+    VALUES
+    (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
 
   
   const result = await executeQuery(
-    `INSERT INTO products
-    (name, image, description, purchase_price, discount, selling_price, link_price, paramedic_price, retail_price, branch_price, unit, group_id, stock, size)
-    VALUES
-    (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+    insertProductQuery,
     [name, image, description, purchasePrice, discount, sellingPrice, linkPrice, paramedicPrice, retailPrice, branchPrice, unit, groupId, stock, size]
   );
 
+  const productId = result.insertId;
   if(!result.insertId){
     throw new InvariantError('User gagal ditambahkan')
   }
+  // insert into product categories
+  const insertProductCategoryQuery = 'INSERT INTO product_categories (product_id, category_id) VALUES (?, ?)';
+  const productCategories = categories.map(categoryId => [productId, categoryId]);
+  
+  productCategories.forEach(async (item) => {
+    const resultProductCategories = await executeQuery(insertProductCategoryQuery, item);
+  
+    if(!resultProductCategories.insertId){
+      throw new InvariantError('gagal menambahkan category')
+    }
+  })
+
+  const insertProductSubCategoryQuery = 'INSERT INTO product_sub_categories (product_id, sub_category_id) VALUES (?, ?)';
+  const productSubCategories = subCategories.map(subCategoryId => [productId, subCategoryId]);
+
+  productSubCategories.forEach(async (item) =>{
+    const resultProductSubCategories = await executeQuery(insertProductSubCategoryQuery, item);
+    
+    if(!resultProductSubCategories.insertId){
+      throw new InvariantError('gagal menambahkan sub category')
+    }
+  })
+
 
   return result.insertId;
 }

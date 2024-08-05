@@ -27,6 +27,8 @@ export type ProductPayload = {
   stock: number;
   size: string;
   discount: number;
+  categories: number[],
+  subCategories: number[],
 }
 
 export type ProductTransaction = {
