@@ -3,6 +3,7 @@ import { usersRouter, loginRouter, productsRouter, uploadRouter, transactionsRou
 import { errorHandler } from "./utils/errorHandler";
 import cors from 'cors';
 import logger from '@utils/winstone';
+import path from "path";
 
 const app: Express = express();
 
@@ -14,6 +15,7 @@ app.use((req: Request, res: Response, next: NextFunction) => {
   next();
 });
 
+app.use('/src/public', express.static(path.join(__dirname, 'src/public')));
 app.use(usersRouter);
 app.use(productsRouter);
 app.use(loginRouter);

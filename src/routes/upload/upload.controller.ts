@@ -10,7 +10,9 @@ const postUploadImage = async (req: Request, res: Response, next: NextFunction) 
         data: "No File is selected.",
       });
     }
-    res.send(file);
+
+    const urlImage = `${req.protocol}://${req.get('host')}/uploads/${file}`;
+    res.send(urlImage);
   } catch (error) {
     next(error)
   }

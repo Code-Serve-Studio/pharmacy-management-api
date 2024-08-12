@@ -1,3 +1,4 @@
+import InvariantError from "@src/exceptions/InvariantError";
 import { TransactionPayload } from "@src/types/request";
 import { executeQuery, pool, queryGenerator, selectQuery } from "@utils/database";
 
@@ -6,8 +7,8 @@ const addTransaction = async (transaction: TransactionPayload) => {
     transactionType,
     userId,
     totalPrice,
-    transactionDate,
-    products
+    products,
+    revenueType,
   } = transaction;
 
   let connection = await pool.getConnection();
@@ -17,10 +18,10 @@ const addTransaction = async (transaction: TransactionPayload) => {
     
     const transactionId = await executeQuery(
       `INSERT INTO transactions
-      (transaction_type, user_id, total_price, transaction_date)
+      (transaction_type, revenue_type, user_id, total_price)
       VALUES
       (?, ?, ?, ?)`,
-      [transactionType, userId, totalPrice, transactionDate]
+      [transactionType, revenueType, userId, totalPrice]
     )
     
     // const values = products.map(({productId, quantity, price}) => {
@@ -31,12 +32,20 @@ const addTransaction = async (transaction: TransactionPayload) => {
       return [transactionId.insertId, productId, quantity, price]
     })
 
-    const query = queryGenerator(`INSERT INTO transaction_details
+    const detailTransactionQuery = `INSERT INTO transaction_details
     (transaction_id, product_id, quantity, price)
-    VALUES ?`, [values]);
+    VALUES (?, ?, ?, ?)`;
+    
+    values.forEach(async (item) => {
+      const resultDetailTransaction = await executeQuery(detailTransactionQuery, item);
+
+      if(!resultDetailTransaction.insertId){
+        throw new InvariantError('gagal menambahkan detail transaction');
+      }
+    })
     
 
-    await executeQuery(query)
+    // await executeQuery(query)/
 
     await connection.commit();
     return transactionId.insertId;

@@ -38,7 +38,8 @@ export type ProductTransaction = {
 }
 
 export type TransactionPayload = {
-  transactionType: 'in' | 'out';
+  revenueType: 'in' | 'out';
+  transactionType: string;
   userId: string | number;
   totalPrice: number;
   transactionDate: string | number;
