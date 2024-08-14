@@ -23,10 +23,17 @@ const addTransaction = async (transaction: TransactionPayload) => {
       (?, ?, ?, ?)`,
       [transactionType, revenueType, userId, totalPrice]
     )
-    
-    // const values = products.map(({productId, quantity, price}) => {
-    //   return `${transactionId.insertId}, ${productId}, ${quantity}, ${price}`
-    // }).join(',')
+
+    const updateStockQuery = `UPDATE products SET stock = stock - ? WHERE products.product_id = ?`;
+
+    products.forEach(async (item) => {
+      const resultUpdateStock = await executeQuery(updateStockQuery, [item.quantity, item.productId]);
+      console.log(resultUpdateStock);
+      
+      if(resultUpdateStock.affectedRows === 0){
+        throw new InvariantError('gagal mengupdate stock');
+      }
+    })
 
     const values = products.map(({productId, quantity, price}) => {
       return [transactionId.insertId, productId, quantity, price]
@@ -62,7 +69,17 @@ const addTransaction = async (transaction: TransactionPayload) => {
 }
 
 const selectTransactions = async () => {
-  const query = queryGenerator(`SELECT * FROM transactions`);
+
+  const query = `SELECT
+    transactions.transaction_id as id,
+    transactions.transaction_type as transactionType,
+    transactions.revenue_type as revenueType,
+    transactions.transaction_date as transactionDate,
+    transactions.total_price as totalPrice,
+    users.username as pic
+    FROM transactions
+    JOIN  users ON transactions.user_id = users.user_id
+  `;
   const result = await selectQuery(query);  
 
   return result;

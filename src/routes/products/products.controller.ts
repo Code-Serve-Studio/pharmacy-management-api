@@ -26,9 +26,7 @@ const getProducts = async (_: Request, res: Response, next: NextFunction) => {
 
     const response = {
       status: 'success',
-      data: {
-        products
-      }
+      data: [...products]
     }
 
     res.status(200).json(response);
@@ -53,8 +51,27 @@ const getProduct = async(req: Request, res: Response, next: NextFunction) => {
   }
 }
 
+const getProductPriceByCategory = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const category = req.query.category as string | undefined;
+    
+
+    const products = await productsModel.selectProductByCategory(category)
+
+    const response = {
+      status: 'success',
+      data: [...products],
+    }
+
+    res.status(200).json(response);
+  } catch (error) {
+    next(error);
+  }
+}
+
 export {
   postProduct,
   getProducts,
   getProduct,
+  getProductPriceByCategory,
 }

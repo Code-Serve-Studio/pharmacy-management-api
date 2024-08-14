@@ -27,12 +27,10 @@ const getTransactions = async (_: Request, res: Response, next: NextFunction) =>
 
     const response = {
       status: 'success',
-      data: {
-        transactions
-      }
+      data: [...transactions]
     }
 
-    res.status(201).json(response);
+    res.status(200).json(response);
   } catch (error) {
     next(error);
   }

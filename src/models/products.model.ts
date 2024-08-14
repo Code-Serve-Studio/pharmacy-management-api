@@ -1,5 +1,6 @@
 import InvariantError from "@src/exceptions/InvariantError";
 import NotFoundError from "@src/exceptions/NotFoundError";
+import { productQueryParams } from "@src/types/queryParams";
 import { ProductPayload } from "@src/types/request";
 import { executeQuery, selectQuery } from "@src/utils/database";
 
@@ -73,6 +74,36 @@ const selectProducts = async () => {
   return result;
 }
 
+const selectProductByCategory = async (type: string | undefined) => {
+  let query;
+  switch(type){
+    case 'link':
+      query = `SELECT product_id as id, name, image, link_price as price, stock FROM products WHERE link_price != 0 AND stock != 0`;
+    break;
+    case 'paramedic':
+      query = `SELECT product_id as id, name, image, paramedic_price as price, stock FROM products WHERE paramedic_price != 0 AND stock != 0`;
+    break;
+    case 'retail':
+      query = `SELECT product_id as id, name, image, retail_price as price, stock FROM products WHERE retail_price != 0 AND stock != 0`;
+    break;
+    case 'branch':
+      query = `SELECT product_id as id, name, image, branch_price as price, stock FROM products WHERE branch_price != 0 AND stock != 0`;
+    break;
+    case 'purchase':
+      query = `SELECT product_id as id, name, image, purchase_price as price, stock FROM products`;
+    break;
+    default :
+      query = `SELECT product_id as id, name, image, selling_price as price, stock FROM products WHERE selling_price != 0 AND stock != 0`;
+    break;
+  }
+
+  const result = await selectQuery(query);
+  
+
+  return result;
+  
+}
+
 const selectProductById = async ({id}: {id:string | number}) => {
   const result = await selectQuery(
     `SELECT * FROM products WHERE product_id = ?`,
@@ -91,4 +122,5 @@ export default {
   addProduct,
   selectProducts,
   selectProductById,
+  selectProductByCategory,
 }
