@@ -7,7 +7,7 @@ const authentication = async (req: Request, res: Response, next: NextFunction) =
   try {
     const {username, password} = req.body as LoginPayload;
     const user = await verifyUserCredential({username, password});
-
+    
     const accessToken = generateAccessToken(user);
 
     // START: Implement Refresh Token Later

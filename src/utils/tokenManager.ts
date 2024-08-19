@@ -4,7 +4,7 @@ import { Request, Response, NextFunction } from 'express';
 import InvariantError from "@src/exceptions/InvariantError";
 import AuthenticationError from "@src/exceptions/AuthenticationError";
 
-const generateAccessToken = (payload: TokenPayload) => {
+const generateAccessToken = (payload: any) => {
   const key = process.env.ACCESS_TOKEN_KEY as string;
   const accessToken = jwt.sign(payload, key);
 
@@ -23,7 +23,7 @@ const verifyRefreshToken = (refreshToken: string) => {
     const key = process.env.REFRESH_TOKEN_KEY as string;
     const decode = jwt.verify(refreshToken, key) as TokenPayload;
 
-    return decode.userId;
+    return decode;
   } catch (error) {
     throw new InvariantError('Refresh token tidak valid');
   }
@@ -59,7 +59,7 @@ const getUserId = (token: string) => {
   const key = process.env.ACCESS_TOKEN_KEY as string;
   const decode = jwt.verify(token, key) as unknown as DecodePayload;
 
-  return decode.userId;
+  return decode;
 }
 
 export {

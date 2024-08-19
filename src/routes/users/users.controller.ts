@@ -1,6 +1,7 @@
-import { Request, Response, NextFunction } from "express";
+import e, { Request, Response, NextFunction } from "express";
 import usersModel from "@models/users.model";
 import { UserPayload } from "@src/types/request";
+import { getUserId } from "@utils/tokenManager";
 
 
 const getAllUsers = async (_: Request, res: Response, next: NextFunction) => {
@@ -38,7 +39,31 @@ const postUser = async (req: Request, res: Response, next: NextFunction) => {
   }
 }
 
+const getUserLogin = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const authHeader = req.headers.authorization;
+    if(authHeader){
+      const token = authHeader.split(' ')[1];
+      
+      const users = getUserId(token);
+      
+      res.status(200).json({
+        status: 'success',
+        data: users
+      })
+    } else {
+      res.status(401).json({
+        status: 'fail',
+        message: 'Unauthorized'
+      })
+    }
+  } catch (error) {
+    next(error);
+  }
+}
+
 export {
   getAllUsers,
-  postUser
+  postUser,
+  getUserLogin,
 }

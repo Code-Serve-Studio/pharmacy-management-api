@@ -5,15 +5,22 @@ import { executeQuery, selectQuery } from "@src/utils/database";
 import bcrypt from 'bcryptjs';
 
 const verifyUserCredential = async ({username, password}: LoginPayload) => {
-  const result = await selectQuery(
-    'SELECT user_id, password FROM users WHERE username = ?',
-    [username]
-  )
+  const query = `SELECT
+    users.user_id as id,
+    users.full_name as fullName,
+    users.photo_profile as image,
+    users.password as hashedPassword,
+    roles.role_name as role
+    FROM users
+    JOIN roles ON users.role_id = roles.role_id
+    WHERE username = ?
+  `
+  const result = await selectQuery(query, [username]);
   if(!result.length) {
     throw new InvariantError('username tidak ditemukan');
-  }
+  }  
 
-  const {id, password: hashedPassword} = result[0];
+  const {hashedPassword, ...restData} = result[0];
 
   const match = await bcrypt.compare(password, hashedPassword);
 
@@ -21,7 +28,7 @@ const verifyUserCredential = async ({username, password}: LoginPayload) => {
     throw new AuthenticationError('Kredensial yang anda berikan salah');
   }
 
-  return {userId: id}
+  return {...restData}
 }
 
 const addRefreshToken = async (token: string) => {
