@@ -118,9 +118,17 @@ const selectProductById = async ({id}: {id:string | number}) => {
   return result[0];
 }
 
+const selectCriticalProduct = async () => {
+  const result = await selectQuery(
+    `SELECT * FROM products WHERE stock <= 10`
+  )
+  return result;
+}
+
 export default {
   addProduct,
   selectProducts,
   selectProductById,
   selectProductByCategory,
+  selectCriticalProduct
 }

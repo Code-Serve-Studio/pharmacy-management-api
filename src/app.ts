@@ -5,6 +5,7 @@ import cors from 'cors';
 import logger from '@utils/winstone';
 import path from "path";
 import rolesRouter from "@routes/roles/roles.router";
+import analyticsRouter from "@routes/analytics/anallytics.router";
 
 const app: Express = express();
 
@@ -25,6 +26,7 @@ app.use(transactionsRouter);
 app.use(groupRouter);
 app.use(categoryRouter);
 app.use(rolesRouter);
+app.use(analyticsRouter);
 app.use(errorHandler);
 
 export default app;

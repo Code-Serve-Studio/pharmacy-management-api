@@ -85,7 +85,58 @@ const selectTransactions = async () => {
   return result;
 }
 
+const selectTotalTransactionByType = async (type: string) => {
+  const query = `SELECT
+    SUM(total_price) AS total_sum
+    FROM transactions
+    WHERE revenue_type = ?
+  `
+  const result = await selectQuery(query, [type]);
+
+  return result[0];
+}
+
+const selectTotalProductTransaction = async () => {
+  const query = `SELECT 
+      t.revenue_type AS revenueType, 
+      SUM(td.quantity) AS totalQuantity
+  FROM 
+      transactions t
+  JOIN 
+      transaction_details td ON t.transaction_id = td.transaction_id
+  GROUP BY 
+      t.revenue_type;
+  `
+  const result = await selectQuery(query);
+
+  return result;
+}
+
+const selectTransactionByTypePerMonth = async (type: string) => {
+  const query = `
+    SELECT 
+        MONTH(transaction_date) AS month, 
+        SUM(total_price) AS total_income
+    FROM 
+        transactions
+    WHERE 
+        revenue_type = ?
+        AND YEAR(transaction_date) = YEAR(CURDATE())
+    GROUP BY 
+        MONTH(transaction_date)
+    ORDER BY 
+        MONTH(transaction_date);
+  `
+
+  const result = await selectQuery(query, [type]);
+
+  return result;
+}
+
 export default {
   addTransaction,
   selectTransactions,
+  selectTotalTransactionByType,
+  selectTotalProductTransaction,
+  selectTransactionByTypePerMonth,
 }
