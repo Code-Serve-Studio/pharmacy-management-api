@@ -106,7 +106,37 @@ const selectProductByCategory = async (type: string | undefined) => {
 
 const selectProductById = async ({id}: {id:string | number}) => {
   const result = await selectQuery(
-    `SELECT * FROM products WHERE product_id = ?`,
+    `SELECT
+      p.product_id as id,
+      p.name,
+      p.description,
+      p.image,
+      p.purchase_price as purchasePrice,
+      p.selling_price as sellingPrice,
+      p.link_price as linkPrice,
+      p.paramedic_price as paramedicPrice,
+      p.retail_price as retailPrice,
+      p.branch_price as branchPrice,
+      p.unit,
+      p.group_id as groupId,
+      p.stock,
+      p.size,
+      p.discount,
+      GROUP_CONCAT(DISTINCT c.category_id) as categoryIds,
+      GROUP_CONCAT(DISTINCT c.category_name) as categoryNames,
+      GROUP_CONCAT(DISTINCT sc.sub_category_id) as subCategoryIds,
+      GROUP_CONCAT(DISTINCT sc.sub_category_name) as subCategoryNames
+    FROM products p
+    LEFT JOIN 
+      product_categories pc ON p.product_id = pc.product_id
+    LEFT JOIN 
+      category c ON pc.category_id = c.category_id
+    LEFT JOIN 
+      product_sub_categories psc ON p.product_id = psc.product_id
+    LEFT JOIN 
+      sub_categories sc ON psc.sub_category_id = sc.sub_category_id
+    WHERE p.product_id = ?
+    GROUP BY p.product_id`,
     [id]
   )
   
@@ -114,8 +144,17 @@ const selectProductById = async ({id}: {id:string | number}) => {
   if(!result[0]){
     throw new NotFoundError('User tidak ditemukan')
   }
+  
 
-  return result[0];
+  const product = result[0];
+  console.log(product);
+  
+  product.categoryIds = product.categoryIds ? product.categoryIds.split(',').map(Number) : [];
+  product.categoryNames = product.categoryNames ? product.categoryNames.split(',') : [];
+  product.subCategoryIds = product.subCategoryIds ? product.subCategoryIds.split(',').map(Number) : [];
+  product.subCategoryNames = product.subCategoryNames ? product.subCategoryNames.split(',') : [];
+
+  return product;
 }
 
 const selectCriticalProduct = async () => {

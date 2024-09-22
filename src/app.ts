@@ -27,6 +27,7 @@ app.use(groupRouter);
 app.use(categoryRouter);
 app.use(rolesRouter);
 app.use(analyticsRouter);
+app.use('/public', express.static(path.join(__dirname, 'public')));
 app.use(errorHandler);
 
 export default app;

@@ -11,7 +11,7 @@ const postUploadImage = async (req: Request, res: Response, next: NextFunction) 
       });
     }
 
-    const urlImage = `${req.protocol}://${req.get('host')}/uploads/${file}`;
+    const urlImage = `${req.protocol}://${req.get('host')}/public/${file}`;
     res.send(urlImage);
   } catch (error) {
     next(error)
