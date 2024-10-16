@@ -1,0 +1,32 @@
+meta {
+  name: put product
+  type: http
+  seq: 13
+}
+
+put {
+  url: http://localhost:8000/api/products/17
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "name": "Panadol Extra",
+    "image": "https://d2qjkwm11akmwu.cloudfront.net/products/222822_24-8-2022_11-38-12-1665760972.webp",
+    "description": "Ini deskripsi",
+    "purchasePrice": 5000,
+    "sellingPrice": 6000,
+    "linkPrice": 6000,
+    "retailPrice": 6000,
+    "paramedicPrice": 6000,
+    "branchPrice": 6000,
+    "unit": "tablet",
+    "groupId": 1,
+    "stock": 0,
+    "size": "box",
+    "discount": 10,
+    "categories": [5],
+    "subCategories":[1]
+  }
+}

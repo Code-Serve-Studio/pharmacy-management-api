@@ -16,6 +16,23 @@ const getRolesSelect = async (_: Request, res: Response, next: NextFunction) => 
   }
 }
 
+const createRole = async (req: Request, res: Response, next: NextFunction) => {
+  const {name, permission} = req.body;
+  try {
+    const result =  await rolesModel.postRole({name, permission});
+    const response = {
+      status: 'success',
+      data: {
+        roleId: result
+      }
+    }
+    res.status(201).json(response);
+  } catch (error) {
+    next(error);
+  }
+}
+
 export {
   getRolesSelect,
+  createRole,
 }

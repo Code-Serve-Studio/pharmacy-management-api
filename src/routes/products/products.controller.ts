@@ -5,7 +5,7 @@ import productsModel from "@models/products.model";
 const postProduct = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const product = req.body as ProductPayload;
-    const productId = await productsModel.addProduct(product);
+    const productId = await productsModel.insertProduct(product);
 
     const response = {
       status: 'success',
@@ -69,9 +69,48 @@ const getProductPriceByCategory = async (req: Request, res: Response, next: Next
   }
 }
 
+const updateProduct = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const product = req.body as ProductPayload;
+    const id = req.params.id as string | number
+    const productId = await productsModel.updateProduct(product, id);
+
+    const response = {
+      status: 'success',
+      data: {
+        productId
+      }
+    }
+
+    res.status(200).json(response);
+  } catch (error) {
+    next(error);
+  }
+}
+
+const deleteProduct = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const id = req.params.id as string | number
+    const productId = await productsModel.softDeleteProduct(id);
+
+    const response = {
+      status: 'success',
+      data: {
+        productId
+      }
+    }
+
+    res.status(200).json(response);
+  } catch (error) {
+    next(error);
+  }
+}
+
 export {
   postProduct,
   getProducts,
   getProduct,
   getProductPriceByCategory,
+  updateProduct,
+  deleteProduct,
 }

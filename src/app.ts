@@ -1,5 +1,5 @@
 import express, { Express, Request, Response, NextFunction } from "express";
-import { usersRouter, loginRouter, productsRouter, uploadRouter, transactionsRouter, groupRouter, categoryRouter } from "./routes";
+import { usersRouter, loginRouter, productsRouter, uploadRouter, transactionsRouter, groupRouter, categoryRouter, masterDataRouter } from "./routes";
 import { errorHandler } from "./utils/errorHandler";
 import cors from 'cors';
 import logger from '@utils/winstone';
@@ -27,6 +27,7 @@ app.use(groupRouter);
 app.use(categoryRouter);
 app.use(rolesRouter);
 app.use(analyticsRouter);
+app.use(masterDataRouter);
 app.use('/public', express.static(path.join(__dirname, 'public')));
 app.use(errorHandler);
 

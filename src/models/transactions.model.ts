@@ -24,7 +24,15 @@ const addTransaction = async (transaction: TransactionPayload) => {
       [transactionType, revenueType, userId, totalPrice]
     )
 
-    const updateStockQuery = `UPDATE products SET stock = stock - ? WHERE products.product_id = ?`;
+    let updateStockQuery = '';
+
+    if(revenueType === 'in'){
+      updateStockQuery = `UPDATE products SET stock = stock - ? WHERE products.product_id = ?`;
+    }
+    if(revenueType === 'out'){
+      updateStockQuery = `UPDATE products SET stock = stock + ? WHERE products.product_id = ?`;
+    }
+
 
     products.forEach(async (item) => {
       const resultUpdateStock = await executeQuery(updateStockQuery, [item.quantity, item.productId]);

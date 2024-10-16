@@ -23,9 +23,9 @@ const addProduct = async (product: ProductPayload) => {
     categories,
     subCategories,
   } = product;
-
+  
   const insertProductQuery = `INSERT INTO products
-    (name, image, description, purchase_price, discount, selling_price, link_price, paramedic_price, retail_price, branch_price, unit, group_id, stock, size)
+    (name, image, description, purchase_price, discount, selling_price, link_price, paramedic_price, retail_price, branch_price, unit_id, group_id, stock, size)
     VALUES
     (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
 
@@ -64,6 +64,63 @@ const addProduct = async (product: ProductPayload) => {
 
 
   return result.insertId;
+}
+
+const insertProduct = async (product: ProductPayload) => {
+  const {
+    name,
+    image,
+    description,
+    purchasePrice,
+    discount,
+    sellingPrice,
+    linkPrice,
+    paramedicPrice,
+    retailPrice,
+    branchPrice,
+    unit,
+    groupId,
+    stock,
+    size,
+    categories,
+    subCategories,
+  } = product;
+
+  const createdAt = new Date();
+  const insertProductQuery = `INSERT INTO products
+    (name, image, description, purchase_price, discount, selling_price, link_price, paramedic_price, retail_price, branch_price, unit_id, group_id, stock, size, created_at)
+    VALUES
+    (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+
+  const result = await executeQuery(
+    insertProductQuery,
+    [name, image, description, purchasePrice, discount, sellingPrice, linkPrice, paramedicPrice, retailPrice, branchPrice, unit, groupId, stock, size, createdAt]
+  );
+
+  const productId = result.insertId;
+  if (!productId) {
+    throw new InvariantError('Produk gagal ditambahkan');
+  }
+
+  // Insert into product categories
+  const insertProductCategoryQuery = 'INSERT INTO product_categories (product_id, category_id) VALUES (?, ?)';
+  await Promise.all(categories.map(async (categoryId) => {
+    const resultProductCategories = await executeQuery(insertProductCategoryQuery, [productId, categoryId]);
+    if (!resultProductCategories.insertId) {
+      throw new InvariantError('Gagal menambahkan kategori');
+    }
+  }));
+
+  // Insert into product sub-categories
+  const insertProductSubCategoryQuery = 'INSERT INTO product_sub_categories (product_id, sub_category_id) VALUES (?, ?)';
+  await Promise.all(subCategories.map(async (subCategoryId) => {
+    const resultProductSubCategories = await executeQuery(insertProductSubCategoryQuery, [productId, subCategoryId]);
+    if (!resultProductSubCategories.insertId) {
+      throw new InvariantError('Gagal menambahkan sub kategori');
+    }
+  }));
+
+  return productId;
 }
 
 const selectProducts = async () => {
@@ -117,7 +174,7 @@ const selectProductById = async ({id}: {id:string | number}) => {
       p.paramedic_price as paramedicPrice,
       p.retail_price as retailPrice,
       p.branch_price as branchPrice,
-      p.unit,
+      p.unit_id,
       p.group_id as groupId,
       p.stock,
       p.size,
@@ -147,7 +204,6 @@ const selectProductById = async ({id}: {id:string | number}) => {
   
 
   const product = result[0];
-  console.log(product);
   
   product.categoryIds = product.categoryIds ? product.categoryIds.split(',').map(Number) : [];
   product.categoryNames = product.categoryNames ? product.categoryNames.split(',') : [];
@@ -164,10 +220,83 @@ const selectCriticalProduct = async () => {
   return result;
 }
 
+const softDeleteProduct = async (id: string | number) => {
+  const currentTimeStamp = new Date().toISOString(); // Menggunakan format ISO string untuk datetime
+  const result = await executeQuery(
+    'UPDATE products SET deleted_at = ? WHERE product_id = ?',
+    [currentTimeStamp, id]
+  );
+
+  if (result.affectedRows === 0) {
+    throw new Error('Produk gagal dihapus secara soft');
+  }  
+
+  return id; // Mengembalikan jumlah baris yang terpengaruh
+}
+
+const updateProduct = async (product: ProductPayload, id: string | number) => {
+  const {
+    name,
+    image,
+    description,
+    purchasePrice,
+    linkPrice,
+    paramedicPrice,
+    retailPrice,
+    branchPrice,
+    unit,
+    groupId,
+    stock,
+    size,
+    sellingPrice,
+    discount,
+    categories,
+    subCategories,
+  } = product;
+
+  const updateProductQuery = `UPDATE products SET
+    name = ?, image = ?, description = ?, purchase_price = ?, discount = ?,
+    selling_price = ?, link_price = ?, paramedic_price = ?, retail_price = ?,
+    branch_price = ?, unit_id = ?, group_id = ?, stock = ?, size = ?
+    WHERE product_id = ?`;
+
+  const result = await executeQuery(
+    updateProductQuery,
+    [name, image, description, purchasePrice, discount, sellingPrice, linkPrice, paramedicPrice, retailPrice, branchPrice, unit, groupId, stock, size, id]
+  );
+
+  if (result.affectedRows === 0) {
+    throw new InvariantError('Produk gagal diperbarui');
+  }
+
+  // Update product categories
+  const updateProductCategoryQuery = 'UPDATE product_categories SET category_id = ? WHERE product_id = ?';
+  await Promise.all(categories.map(async (categoryId) => {
+    const resultProductCategories = await executeQuery(updateProductCategoryQuery, [categoryId, id]);
+    if (resultProductCategories.affectedRows === 0) {
+      throw new InvariantError('Gagal memperbarui kategori');
+    }
+  }));
+
+  // Update product sub-categories
+  const updateProductSubCategoryQuery = 'UPDATE product_sub_categories SET sub_category_id = ? WHERE product_id = ?';
+  await Promise.all(subCategories.map(async (subCategoryId) => {
+    const resultProductSubCategories = await executeQuery(updateProductSubCategoryQuery, [subCategoryId, id]);
+    if (resultProductSubCategories.affectedRows === 0) {
+      throw new InvariantError('Gagal memperbarui sub kategori');
+    }
+  }));
+
+  return id;
+}
+
 export default {
   addProduct,
   selectProducts,
   selectProductById,
   selectProductByCategory,
-  selectCriticalProduct
+  selectCriticalProduct,
+  softDeleteProduct,
+  insertProduct,
+  updateProduct,
 }

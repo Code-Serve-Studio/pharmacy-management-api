@@ -5,6 +5,7 @@ import uploadRouter from './upload/upload.router';
 import transactionsRouter from './transactions/transactions.router';
 import groupRouter from './group/group.router';
 import categoryRouter from './category/category.router';
+import masterDataRouter from './masterData/masterData.router';
 
 export {
   usersRouter,
@@ -14,4 +15,5 @@ export {
   transactionsRouter,
   groupRouter,
   categoryRouter,
+  masterDataRouter,
 }
