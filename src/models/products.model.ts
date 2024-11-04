@@ -125,7 +125,7 @@ const insertProduct = async (product: ProductPayload) => {
 
 const selectProducts = async () => {
   const result = await selectQuery(
-    'SELECT * FROM products'
+    'SELECT * FROM products WHERE deleted_at IS NULL'
   );
 
   return result;
@@ -135,24 +135,24 @@ const selectProductByCategory = async (type: string | undefined) => {
   let query;
   switch(type){
     case 'link':
-      query = `SELECT product_id as id, name, image, link_price as price, stock FROM products WHERE link_price != 0 AND stock != 0`;
+      query = `SELECT product_id as id, name, image, link_price as price, stock FROM products WHERE link_price != 0 AND stock != 0 AND deleted_at IS NULL`;
     break;
     case 'paramedic':
-      query = `SELECT product_id as id, name, image, paramedic_price as price, stock FROM products WHERE paramedic_price != 0 AND stock != 0`;
+      query = `SELECT product_id as id, name, image, paramedic_price as price, stock FROM products WHERE paramedic_price != 0 AND stock != 0 AND deleted_at IS NULL`;
     break;
     case 'retail':
-      query = `SELECT product_id as id, name, image, retail_price as price, stock FROM products WHERE retail_price != 0 AND stock != 0`;
+      query = `SELECT product_id as id, name, image, retail_price as price, stock FROM products WHERE retail_price != 0 AND stock != 0 AND deleted_at IS NULL`;
     break;
     case 'branch':
-      query = `SELECT product_id as id, name, image, branch_price as price, stock FROM products WHERE branch_price != 0 AND stock != 0`;
+      query = `SELECT product_id as id, name, image, branch_price as price, stock FROM products WHERE branch_price != 0 AND stock != 0 AND deleted_at IS NULL`;
     break;
     case 'purchase':
-      query = `SELECT product_id as id, name, image, purchase_price as price, stock FROM products`;
+      query = `SELECT product_id as id, name, image, purchase_price as price, stock FROM products WHERE deleted_at IS NULL`;
     break;
     default :
-      query = `SELECT product_id as id, name, image, selling_price as price, stock FROM products WHERE selling_price != 0 AND stock != 0`;
+      query = `SELECT product_id as id, name, image, selling_price as price, stock FROM products WHERE selling_price != 0 AND stock != 0 AND deleted_at IS NULL`;
     break;
-  }
+  }  
 
   const result = await selectQuery(query);
   
@@ -228,7 +228,7 @@ const softDeleteProduct = async (id: string | number) => {
   );
 
   if (result.affectedRows === 0) {
-    throw new Error('Produk gagal dihapus secara soft');
+    throw new Error('Produk gagal dihapus');
   }  
 
   return id; // Mengembalikan jumlah baris yang terpengaruh
