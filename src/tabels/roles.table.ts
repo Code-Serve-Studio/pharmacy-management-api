@@ -3,28 +3,28 @@ import sequelize from '@utils/databseV2';
 
 // Definisikan antarmuka untuk atribut Role
 interface RoleAttributes {
-    id: number;
-    name: string;
+    role_id: number;
+    role_name: string;
 }
 
 // Definisikan antarmuka untuk atribut Role yang opsional saat membuat Role
-interface RoleCreationAttributes extends Optional<RoleAttributes, 'id'> {}
+interface RoleCreationAttributes extends Optional<RoleAttributes, 'role_id'> {}
 
 // Definisikan model Role
 class Role extends Model<RoleAttributes, RoleCreationAttributes> implements RoleAttributes {
-    public id!: number;
-    public name!: string;
+    public role_id!: number;
+    public role_name!: string;
 }
 
 // Inisialisasi model Role
 Role.init(
     {
-        id: {
+        role_id: {
             type: DataTypes.INTEGER.UNSIGNED,
             autoIncrement: true,
             primaryKey: true,
         },
-        name: {
+        role_name: {
             type: new DataTypes.STRING(128),
             allowNull: false,
         },

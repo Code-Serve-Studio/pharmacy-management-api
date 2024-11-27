@@ -123,12 +123,76 @@ const insertProduct = async (product: ProductPayload) => {
   return productId;
 }
 
-const selectProducts = async () => {
-  const result = await selectQuery(
-    'SELECT * FROM products WHERE deleted_at IS NULL'
-  );
+const selectProducts = async ({search, limit, page} : any) => {
+  const pageInt = parseInt(page);
+  const limitInt = parseInt(limit);
 
-  return result;
+  const offset = (pageInt - 1) * limitInt;
+  const query = `
+    SELECT
+        p.product_id,
+        p.name,
+        p.image,
+        p.description,
+        p.purchase_price,
+        p.selling_price,
+        p.link_price,
+        p.retail_price,
+        p.paramedic_price,
+        p.branch_price,
+        p.stock,
+        p.size,
+        p.discount,
+        p.created_at,
+        p.updated_at,
+        p.deleted_at,
+        u.name as unit_name,
+        GROUP_CONCAT(DISTINCT c.category_name SEPARATOR '|||') as categories,
+        GROUP_CONCAT(DISTINCT sc.sub_category_name SEPARATOR '|||') as sub_categories
+    FROM
+        products p
+    LEFT JOIN units u ON p.unit_id = u.id
+    LEFT JOIN product_categories pc ON p.product_id = pc.product_id
+    LEFT JOIN category c ON pc.category_id = c.category_id
+    LEFT JOIN product_sub_categories psc ON p.product_id = psc.product_id
+    LEFT JOIN sub_categories sc ON psc.sub_category_id = sc.sub_category_id
+    WHERE
+        p.name LIKE CONCAT('%', ?, '%')
+        AND p.deleted_at IS NULL
+    GROUP BY
+        p.product_id
+    ORDER BY
+        p.created_at DESC
+    LIMIT ? OFFSET ?;
+  `;
+
+  const countQuery = `
+    SELECT COUNT(*) as count
+    FROM products
+    WHERE deleted_at IS NULL;
+  `;
+
+  await executeQuery('SET SESSION group_concat_max_len = 10000');
+
+  const result = await selectQuery(query, [search, limitInt, offset]);
+  const countResult = await selectQuery(countQuery);
+  const totalProducts = countResult[0].count;
+
+  const products = result.map((item) => ({
+    ...item,
+    categories: item.categories ? item.categories.split('|||') : [],
+    sub_categories: item.sub_categories ? item.sub_categories.split('|||') : []
+  }))  
+
+  return {
+    page: pageInt,
+    limit: limitInt,
+    totalProducts,
+    data: products,
+    totalPages: Math.ceil(totalProducts / limitInt),
+  };
+
+  // return result;/
 }
 
 const selectProductByCategory = async (type: string | undefined) => {
@@ -290,6 +354,58 @@ const updateProduct = async (product: ProductPayload, id: string | number) => {
   return id;
 }
 
+const selectAllProducts = async () => {  
+  const query = `
+    SELECT
+        p.product_id,
+        p.name,
+        p.image,
+        p.description,
+        p.purchase_price,
+        p.selling_price,
+        p.link_price,
+        p.retail_price,
+        p.paramedic_price,
+        p.branch_price,
+        p.stock,
+        p.size,
+        p.discount,
+        p.created_at,
+        p.updated_at,
+        p.deleted_at,
+        u.name as unit_name,
+        GROUP_CONCAT(DISTINCT c.category_name SEPARATOR '|||') as categories,
+        GROUP_CONCAT(DISTINCT sc.sub_category_name SEPARATOR '|||') as sub_categories
+    FROM
+        products p
+    LEFT JOIN units u ON p.unit_id = u.id
+    LEFT JOIN product_categories pc ON p.product_id = pc.product_id
+    LEFT JOIN category c ON pc.category_id = c.category_id
+    LEFT JOIN product_sub_categories psc ON p.product_id = psc.product_id
+    LEFT JOIN sub_categories sc ON psc.sub_category_id = sc.sub_category_id
+    WHERE
+        p.deleted_at IS NULL
+    GROUP BY
+        p.product_id
+    ORDER BY
+        p.created_at DESC
+  `;
+
+  await executeQuery('SET SESSION group_concat_max_len = 10000');
+
+  const result = await selectQuery(query);
+
+  const products = result.map((item) => ({
+    ...item,
+    categories: item.categories ? item.categories.split('|||').toString(',') : [],
+    sub_categories: item.sub_categories ? item.sub_categories.split('|||').toString(',') : []
+  }))
+  
+  console.log(products);
+  
+  return products;
+}
+
 export default {
   addProduct,
   selectProducts,
@@ -299,4 +415,5 @@ export default {
   softDeleteProduct,
   insertProduct,
   updateProduct,
+  selectAllProducts,
 }

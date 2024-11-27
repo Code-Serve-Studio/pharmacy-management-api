@@ -1,6 +1,7 @@
 import { ProductPayload } from "@src/types/request";
 import { Response, Request, NextFunction } from "express"
 import productsModel from "@models/products.model";
+import xlsx from 'xlsx';
 
 const postProduct = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -20,13 +21,14 @@ const postProduct = async (req: Request, res: Response, next: NextFunction) => {
   }
 }
 
-const getProducts = async (_: Request, res: Response, next: NextFunction) => {
+const getProducts = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const products = await productsModel.selectProducts();
+    const { page = '1', limit = '10', search = '' } = req.query;
+    const products = await productsModel.selectProducts({page, limit, search});
 
     const response = {
       status: 'success',
-      data: [...products]
+      ...products,
     }
 
     res.status(200).json(response);
@@ -106,6 +108,25 @@ const deleteProduct = async (req: Request, res: Response, next: NextFunction) =>
   }
 }
 
+const getExportProducts = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const product = await productsModel.selectAllProducts();
+
+    const workbook = xlsx.utils.book_new();
+    const worksheet = xlsx.utils.json_to_sheet(product);
+
+    xlsx.utils.book_append_sheet(workbook, worksheet, 'Products');
+    const excelBuffer = xlsx.write(workbook, { type: 'buffer', bookType: 'xlsx' });
+
+    const fileName = 'products.xlsx';
+    res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+    res.setHeader('Content-Disposition', `attachment; filename=${fileName}`);
+    res.send(excelBuffer);
+  } catch (error) {
+    next(error);
+  }
+}
+
 export {
   postProduct,
   getProducts,
@@ -113,4 +134,5 @@ export {
   getProductPriceByCategory,
   updateProduct,
   deleteProduct,
+  getExportProducts,
 }

@@ -76,21 +76,43 @@ const addTransaction = async (transaction: TransactionPayload) => {
   }
 }
 
-const selectTransactions = async () => {
+const selectTransactions = async ({page, limit}: any) => {
 
-  const query = `SELECT
-    transactions.transaction_id as id,
-    transactions.transaction_type as transactionType,
-    transactions.revenue_type as revenueType,
-    transactions.transaction_date as transactionDate,
-    transactions.total_price as totalPrice,
-    users.username as pic
+  const pageInt = parseInt(page);
+  const limitInt = parseInt(limit);
+
+  const offset = (pageInt - 1) * limitInt;
+  const query = `
+    SELECT
+      transactions.transaction_id as id,
+      transactions.transaction_type as transactionType,
+      transactions.revenue_type as revenueType,
+      transactions.transaction_date as transactionDate,
+      transactions.total_price as totalPrice,
+      users.username as pic
     FROM transactions
-    JOIN  users ON transactions.user_id = users.user_id
+    JOIN users ON transactions.user_id = users.user_id
+    ORDER BY transactions.transaction_date DESC
+    LIMIT ? OFFSET ?
   `;
-  const result = await selectQuery(query);  
 
-  return result;
+  const countQuery = `
+    SELECT COUNT(*) as count
+    FROM transactions
+  `;
+
+  
+  const transactions = await selectQuery(query, [limitInt, offset]);
+  const countResult = await selectQuery(countQuery);
+  const totalTransactions = countResult[0].count;
+
+  return {
+    page: pageInt,
+    limit: limitInt,
+    totalTransactions,
+    totalPages: Math.ceil(totalTransactions / limitInt),
+    data: transactions
+  };
 }
 
 const selectTotalTransactionByType = async (type: string) => {
@@ -141,10 +163,28 @@ const selectTransactionByTypePerMonth = async (type: string) => {
   return result;
 }
 
+const selectAllTransactions = async () => {
+
+  const query = `SELECT
+    transactions.transaction_id as id,
+    transactions.transaction_type as transactionType,
+    transactions.revenue_type as revenueType,
+    transactions.transaction_date as transactionDate,
+    transactions.total_price as totalPrice,
+    users.username as pic
+    FROM transactions
+    JOIN  users ON transactions.user_id = users.user_id
+  `;
+  const result = await selectQuery(query);  
+
+  return result;
+}
+
 export default {
   addTransaction,
   selectTransactions,
   selectTotalTransactionByType,
   selectTotalProductTransaction,
   selectTransactionByTypePerMonth,
+  selectAllTransactions,
 }
