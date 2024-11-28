@@ -1,0 +1,15 @@
+meta {
+  name: get me
+  type: http
+  seq: 8
+}
+
+get {
+  url: http://localhost:8000/api/users/me
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwiZnVsbE5hbWUiOiJNZWxpYSBIIE5hdGEiLCJpbWFnZSI6Imh0dHBzOi8vaW1nLmZyZWVwaWsuY29tL3ByZW1pdW0tcGhvdG8vM2QtYW5pbWF0ZWQtY2hhcmFjdGVyLW11c2xpbS10ZWVuYWdlLWdpcmwtZW1icmFjaW5nLWtvcmFuXzExODI1NDYtNDIyLmpwZz93PTgyNiIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTcyNDA5MTMwN30.0LvpecdLubQBuvWZnDlxdgFohe119kHGBIqjTsoMHJc
+}

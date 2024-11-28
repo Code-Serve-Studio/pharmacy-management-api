@@ -1,0 +1,22 @@
+meta {
+  name: post user
+  type: http
+  seq: 5
+}
+
+post {
+  url: http://localhost:8000/api/user
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "username": "nata",
+    "email": "melia@nata.com",
+    "password": "12341234",
+    "fullName": "Melia H Nata",
+    "roleId": "1",
+    "image": "https://img.freepik.com/premium-photo/3d-animated-character-muslim-teenage-girl-embracing-koran_1182546-422.jpg?w=826"
+  }
+}

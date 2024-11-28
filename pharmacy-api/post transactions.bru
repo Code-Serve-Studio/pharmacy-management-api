@@ -1,0 +1,33 @@
+meta {
+  name: post transactions
+  type: http
+  seq: 3
+}
+
+post {
+  url: http://localhost:8000/api/transactions
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "revenueType": "in",
+    "userId": 3,
+    "totalPrice": 105000,
+    "transactionDate": "Wed Aug 07 2024 02:25:52 GMT+0700",
+    "transactionType": "link",
+    "products": [
+      {
+        "productId": 2,
+        "quantity": 1,
+        "price": 6000
+      },
+      {
+        "productId": 3,
+        "quantity": 1,
+        "price": 6000
+      }
+    ]
+  }
+}
