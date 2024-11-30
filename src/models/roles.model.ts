@@ -21,10 +21,7 @@ const selectDetailRole = async (roleId: number) => {
 
   if (rows.length === 0) {
     return new InvariantError('Role tidak ditemukan');
-  }
-
-  console.log(rows);
-  
+  }  
 
   const permissions = rows.reduce((acc: any, row: any) => {
     acc[row.module] = {
