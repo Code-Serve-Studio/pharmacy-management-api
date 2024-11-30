@@ -1,4 +1,5 @@
 import { verifyUserCredential } from "@models/authentication.model";
+import rolesModel from "@models/roles.model";
 import { LoginPayload } from "@src/types/request";
 import { generateAccessToken } from "@utils/tokenManager";
 import { Request, Response, NextFunction } from "express";
@@ -7,6 +8,7 @@ const authentication = async (req: Request, res: Response, next: NextFunction) =
   try {
     const {username, password} = req.body as LoginPayload;
     const user = await verifyUserCredential({username, password});
+    // const permissions = 
     
     const accessToken = generateAccessToken(user);
 

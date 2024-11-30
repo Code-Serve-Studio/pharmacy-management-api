@@ -3,6 +3,7 @@ export type TokenPayload = {
   fullName: string;
   image: string;
   role: string;
+  roleId: number;
 }
 
 export type DecodePayload = TokenPayload & {

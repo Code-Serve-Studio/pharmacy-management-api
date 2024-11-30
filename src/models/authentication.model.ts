@@ -10,6 +10,7 @@ const verifyUserCredential = async ({username, password}: LoginPayload) => {
     users.full_name as fullName,
     users.photo_profile as image,
     users.password as hashedPassword,
+    users.role_id as roleId,
     roles.role_name as role
     FROM users
     JOIN roles ON users.role_id = roles.role_id
