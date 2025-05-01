@@ -7,6 +7,15 @@ export type UserPayload = {
   image: string;
 }
 
+export type UserPayloadUpdate = {
+  username: string;
+  email: string;
+  fullName: string;
+  roleId: number;
+  image: string;
+  id: string | number;
+}
+
 export type LoginPayload = {
   username: string;
   password: string;

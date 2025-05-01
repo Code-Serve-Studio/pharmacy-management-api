@@ -263,7 +263,7 @@ const selectProductById = async ({id}: {id:string | number}) => {
   
 
   if(!result[0]){
-    throw new NotFoundError('User tidak ditemukan')
+    throw new NotFoundError('Product tidak ditemukan')
   }
   
 
